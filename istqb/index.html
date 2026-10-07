@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ISTQB CTFL en 90 minutos</title>
+<meta name="description" content="Guía Pareto para aprobar el ISTQB CTFL v4.0: tres bloques de 30 minutos, ejercicios resueltos y simulacro.">
+<meta name="theme-color" content="#1d4ed8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CTFL">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: una columna de lectura (~70ch), barra de días fija arriba, tablas en contenedores con scroll propio */
+:root{
+  --bg:#f4f6f9; --surface:#ffffff; --fg:#17202e; --muted:#5a6578; --line:#d9dfe8;
+  --accent:#1d4ed8; --accent-soft:#e3eafc;
+  --pass:#137a4b; --pass-soft:#e1f3ea; --fail:#b42318; --fail-soft:#fbe7e5; --warn:#8a5a00; --warn-soft:#fdf1d8;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141c; --surface:#171e29; --fg:#e6ebf2; --muted:#9aa6b8; --line:#2a3443;
+  --accent:#7ea2ff; --accent-soft:#1d2a47;
+  --pass:#5fd39b; --pass-soft:#123326; --fail:#ff8f84; --fail-soft:#3a1916; --warn:#f2c46b; --warn-soft:#352a12;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141c; --surface:#171e29; --fg:#e6ebf2; --muted:#9aa6b8; --line:#2a3443;
+  --accent:#7ea2ff; --accent-soft:#1d2a47;
+  --pass:#5fd39b; --pass-soft:#123326; --fail:#ff8f84; --fail-soft:#3a1916; --warn:#f2c46b; --warn-soft:#352a12;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.6;padding-inline:16px;padding-block:0 64px}
+main{max-width:760px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,6vw,2.9rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.65rem;font-weight:800;margin-top:8px}
+h3{font-size:1.15rem;font-weight:600;margin-top:28px;margin-bottom:6px}
+p{margin:8px 0}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+nav.days{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding:10px 16px;display:flex;gap:8px;flex-wrap:wrap}
+nav.days a{font-family:var(--f-mono);font-size:.8rem;text-decoration:none;color:var(--fg);border:1px solid var(--line);background:var(--surface);padding:5px 10px;border-radius:999px}
+nav.days a:hover,nav.days a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+header.hero{padding-block:32px 8px;display:grid;gap:12px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:8px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.fact b{display:block;font-family:var(--f-display);font-size:1.5rem;font-variant-numeric:tabular-nums}
+.fact span{font-size:.85rem;color:var(--muted)}
+section.day{margin-top:48px;padding-top:8px;border-top:3px solid var(--fg)}
+.daymeta{display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;margin-top:6px}
+.chip{font-family:var(--f-mono);font-size:.75rem;padding:2px 8px;border-radius:6px;background:var(--accent-soft);color:var(--accent)}
+.bars{display:grid;gap:6px;margin-top:12px}
+.bar{display:grid;grid-template-columns:minmax(0,11rem) 1fr 2.2rem;gap:10px;align-items:center;font-size:.88rem}
+.bar .track{height:12px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar .fill{height:100%;background:var(--muted)}
+.bar.hot .fill{background:var(--accent)}
+.bar .n{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.tbl{overflow-x:auto;margin:10px 0;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--bg)}
+td:first-child{font-weight:600}
+.key{border-left:4px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+.trap{border-left:4px solid var(--fail);background:var(--fail-soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+.ok{border-left:4px solid var(--pass);background:var(--pass-soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+.key>b:first-child,.trap>b:first-child,.ok>b:first-child{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:2px}
+.trap>b:first-child{color:var(--fail)} .ok>b:first-child{color:var(--pass)} .key>b:first-child{color:var(--accent)}
+ul,ol{padding-left:1.25rem;margin:8px 0} li{margin:3px 0}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+.calc{font-family:var(--f-mono);font-size:.88rem;background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre;line-height:1.5}
+.chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}
+.chain span{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:4px 10px;font-weight:600}
+.chain i{color:var(--muted);font-style:normal}
+/* quiz */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;margin:12px 0}
+.q p.stem{font-weight:600;margin-top:0}
+.q .opts{display:grid;gap:6px}
+.q button{font:inherit;font-size:.92rem;text-align:left;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;cursor:pointer}
+.q button:hover{border-color:var(--accent)}
+.q button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.q button.right{background:var(--pass-soft);border-color:var(--pass)}
+.q button.wrong{background:var(--fail-soft);border-color:var(--fail)}
+.q .why{font-size:.9rem;margin-top:8px;color:var(--muted)}
+#score{font-family:var(--f-mono);font-size:.85rem}
+.answers{columns:2 220px;font-size:.9rem;column-gap:24px}
+.answers div{break-inside:avoid;padding:3px 0;border-bottom:1px dotted var(--line)}
+.answers .mono{color:var(--accent);font-weight:500}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<style>
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;-webkit-text-size-adjust:100%}
+[hidden]{display:none!important}
+img{max-width:100%}
+.install-btn{font-family:var(--f-mono);font-size:.8rem;border:1px solid var(--accent);background:var(--accent);color:#fff;padding:5px 10px;border-radius:999px;cursor:pointer;margin-left:auto}
+.pwa-backdrop{position:fixed;inset:0;z-index:50;background:rgba(10,15,25,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.pwa-sheet{width:100%;max-width:420px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 12px 40px rgba(0,0,0,.25);display:grid;gap:10px;animation:up .25s ease-out}
+@keyframes up{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.pwa-sheet{animation:none}}
+.pwa-row{display:flex;gap:12px;align-items:center}
+.pwa-row img{width:52px;height:52px;border-radius:12px;flex:none}
+.pwa-sheet h2{font-size:1.2rem;margin:0}
+.pwa-sheet p{margin:0;font-size:.95rem;color:var(--muted)}
+.pwa-help{font-size:.9rem;background:var(--bg);border-radius:10px;padding:10px 12px}
+.pwa-actions{display:flex;gap:10px;margin-top:4px}
+.pwa-actions button{flex:1;font:inherit;font-weight:600;padding:12px;border-radius:10px;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.pwa-actions button.yes{background:var(--accent);border-color:var(--accent);color:#fff}
+.pwa-actions button:focus-visible,.install-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+<nav class="days" aria-label="Secciones">
+  <a href="#mapa">Mapa</a><a href="#dia1">Día 1</a><a href="#dia2">Día 2</a><a href="#dia3">Día 3</a><a href="#test">Test</a><a href="#clave">Clave v4.0</a>
+  <button type="button" class="install-btn" id="installBtn" hidden>Instalar app</button>
+</nav>
+
+<header class="hero" id="mapa">
+  <span class="eyebrow">Probador Certificado ISTQB · Nivel Básico v4.0 · iSQI</span>
+  <h1>ISTQB CTFL en 90 minutos</h1>
+  <p>Tres bloques de 30 minutos, hechos a partir de tus 9 PDFs. Solo lo que más puntos da.</p>
+  <div class="facts">
+    <div class="fact"><b>40</b><span>preguntas tipo test, 1 punto cada una</span></div>
+    <div class="fact"><b>26</b><span>aciertos para aprobar (65 %)</span></div>
+    <div class="fact"><b>60 min</b><span>en tu idioma nativo (75 si no lo es)</span></div>
+    <div class="fact"><b>0</b><span>penalización por fallo: contesta todas</span></div>
+  </div>
+
+  <h3>Dónde están los puntos (preguntas por capítulo, v4.0)</h3>
+  <div class="bars">
+    <div class="bar hot"><span>4 · Técnicas de prueba</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="n">11</span></div>
+    <div class="bar hot"><span>5 · Gestión de la prueba</span><div class="track"><div class="fill" style="width:82%"></div></div><span class="n">9</span></div>
+    <div class="bar hot"><span>1 · Fundamentos</span><div class="track"><div class="fill" style="width:73%"></div></div><span class="n">8</span></div>
+    <div class="bar"><span>2 · Ciclo de vida</span><div class="track"><div class="fill" style="width:55%"></div></div><span class="n">6</span></div>
+    <div class="bar"><span>3 · Prueba estática</span><div class="track"><div class="fill" style="width:36%"></div></div><span class="n">4</span></div>
+    <div class="bar"><span>6 · Herramientas</span><div class="track"><div class="fill" style="width:18%"></div></div><span class="n">2</span></div>
+  </div>
+  <p class="muted">Los capítulos 4, 5 y 1 son 28 de 40 preguntas. Ese es tu 20 % que da el 80 %.</p>
+
+  <div class="trap"><b>Ojo con tus PDFs</b>
+  Tu examen será casi seguro de la <b>versión 4.0</b> (la de 2018 ya está retirada; confírmalo en tu email de iSQI). Solo un PDF es v4.0 (el “CTFL V4.0 Modelo A”). Los tres modelos 2018 sirven para practicar técnicas, revisiones y conceptos. <b>Examen1 y Examen2 son muy antiguos</b>: ignora lo que pregunten de BS7925, IEEE 829, complejidad de McCabe, CAST, APF, “pruebas gorila”, “proceso de prueba fundamental” o “pruebas de mono”. Eso ya no entra.</div>
+</header>
+
+<!-- ============ DÍA 1 ============ -->
+<section class="day" id="dia1">
+  <span class="eyebrow">Día 1 · hoy · 30 min</span>
+  <h2>Fundamentos y ciclo de vida</h2>
+  <div class="daymeta"><span class="chip">Cap. 1 + 2</span><span class="chip">14 preguntas</span><span class="muted">Mucha memoria, poco cálculo.</span></div>
+
+  <h3>1. Error, defecto, fallo: la cadena que siempre cae</h3>
+  <div class="chain"><span>Error (equivocación)</span><i>→ produce un →</i><span>Defecto (bug en código o documento)</span><i>→ al ejecutar puede causar un →</i><span>Fallo (comportamiento visible incorrecto)</span></div>
+  <ul>
+    <li><b>Error</b>: lo hace una persona. “El programador se distrae y se equivoca.”</li>
+    <li><b>Defecto</b>: está en el producto. “La frontera superior está mal codificada.”</li>
+    <li><b>Fallo</b>: lo ve alguien al ejecutar. “El campo acepta valores no válidos.”</li>
+    <li><b>Causa raíz</b>: el motivo de fondo del error (la distracción, la falta de formación).</li>
+  </ul>
+  <div class="key"><b>Diferencias que preguntan</b>
+  <b>Probar vs depurar.</b> Probar encuentra fallos o defectos. Depurar es encontrar la causa, analizarla y corregirla (lo hace el desarrollador).<br>
+  <b>Prueba (QC) vs Aseguramiento de la Calidad (QA).</b> La prueba es control de calidad: se centra en el producto y es correctiva. QA se centra en el proceso y es preventiva. No son lo mismo.</div>
+
+  <h3>2. Objetivos de la prueba</h3>
+  <p>Evaluar productos de trabajo, provocar fallos y encontrar defectos, comprobar cobertura, <b>reducir el riesgo</b>, verificar requisitos, cumplir normativa, informar a los implicados y <b>generar confianza</b> en la calidad.</p>
+  <div class="trap"><b>Trampa</b> Cualquier opción que diga “demostrar que no hay defectos”, “garantizar que no habrá fallos” o “probar todas las combinaciones” es falsa.</div>
+
+  <h3>3. Los 7 principios (llegan 1–2 preguntas seguro)</h3>
+  <div class="tbl"><table>
+    <tr><th>Principio</th><th>En una frase</th><th>Pista del enunciado</th></tr>
+    <tr><td>1. La prueba muestra la presencia de defectos</td><td>Nunca demuestra su ausencia.</td><td>“¿Podemos asegurar que no hay errores?”</td></tr>
+    <tr><td>2. La prueba exhaustiva es imposible</td><td>Se prioriza por riesgo y técnicas.</td><td>“Probar todas las combinaciones”</td></tr>
+    <tr><td>3. La prueba temprana ahorra tiempo y dinero</td><td>Shift-left. Cuanto antes, más barato.</td><td>“Revisar requisitos al inicio”</td></tr>
+    <tr><td>4. Los defectos se agrupan</td><td>Pocos módulos concentran la mayoría (Pareto).</td><td>“El 80 % de los fallos está en 2 módulos”</td></tr>
+    <tr><td>5. Las pruebas se desgastan</td><td>Repetir lo mismo deja de encontrar defectos. Hay que actualizar las pruebas.</td><td>“La regresión lleva iteraciones sin encontrar nada y sin cambios”</td></tr>
+    <tr><td>6. La prueba depende del contexto</td><td>No se prueba igual un juego que un marcapasos.</td><td>“Sistema crítico vs web de marketing”</td></tr>
+    <tr><td>7. Falacia de la ausencia de defectos</td><td>Sin bugs pero no sirve al usuario = fracaso.</td><td>“Corregimos todo y el cliente no lo quiere”</td></tr>
+  </table></div>
+
+  <h3>4. Proceso de prueba: 7 actividades y qué sale de cada una</h3>
+  <p>La pregunta típica: “te doy un producto de trabajo, ¿qué actividad lo produce?”. La regla de oro: <b>análisis = QUÉ probar</b>, <b>diseño = CÓMO probarlo</b>.</p>
+  <div class="tbl"><table>
+    <tr><th>Actividad</th><th>Qué haces</th><th>Qué sale</th></tr>
+    <tr><td>Planificación</td><td>Objetivos y enfoque</td><td>Plan de prueba</td></tr>
+    <tr><td>Monitorización y control</td><td>Comparar avance con el plan y corregir</td><td>Informes de avance, directivas de control</td></tr>
+    <tr><td>Análisis</td><td>Estudiar la base de prueba y decidir QUÉ probar</td><td>Condiciones de prueba priorizadas, defectos en la base de prueba</td></tr>
+    <tr><td>Diseño</td><td>Convertir condiciones en casos (aplicar técnicas como AVF)</td><td>Casos de prueba, <b>contratos de prueba</b> (exploratoria), elementos de cobertura, requisitos de datos y entorno</td></tr>
+    <tr><td>Implementación</td><td>Dejar todo listo para ejecutar</td><td>Procedimientos, guiones automatizados, <b>juegos de prueba (suites)</b>, datos, calendario, entorno montado</td></tr>
+    <tr><td>Ejecución</td><td>Ejecutar, comparar esperado con real, informar</td><td>Registros de prueba, informes de defecto</td></tr>
+    <tr><td>Compleción</td><td>Cerrar al final de un hito</td><td>Informe de compleción, lecciones aprendidas, testware archivado</td></tr>
+  </table></div>
+  <p class="muted">En los PDFs 2018 verás “cierre de la prueba”: es lo mismo que “compleción”.</p>
+  <p><b>Factores que influyen en el proceso</b>: el ciclo de vida (CVDS), los riesgos de producto, normativa, organización, restricciones (presupuesto, plazos). El número de probadores certificados no influye de forma significativa.</p>
+  <p><b>Trazabilidad</b> (base de prueba ↔ condiciones ↔ casos ↔ resultados ↔ defectos): sirve para el <b>análisis de impacto</b> de cambios (qué regresión ejecutar), medir cobertura y demostrar cumplimiento.</p>
+
+  <h3>5. Personas</h3>
+  <ul>
+    <li><b>Rol de gestión</b>: plan, estrategia, monitorización, informes al negocio.</li>
+    <li><b>Rol de prueba</b>: analizar, diseñar, implementar y ejecutar; <b>configurar entornos</b>; <b>informar de la cobertura</b>.</li>
+    <li><b>Competencias clave del probador</b>: conocimiento del dominio, pensamiento crítico y curiosidad, buen trabajo en equipo, comunicación. (Crear la visión del producto o planificar el equipo no son del probador.)</li>
+    <li><b>Enfoque de equipo completo</b>: todos responden de la calidad. El probador ayuda al negocio a <b>crear pruebas de aceptación</b> y al desarrollador con la estrategia.</li>
+    <li><b>Independencia</b>. Ventaja: otro sesgo cognitivo, cuestiona supuestos y ambigüedades. Inconveniente: aislamiento, cuello de botella, el desarrollador pierde sentido de responsabilidad sobre la calidad.</li>
+  </ul>
+
+  <h3>6. Ciclo de vida y enfoques modernos</h3>
+  <p><b>Regla que vale para cualquier modelo</b> (secuencial, iterativo o incremental): para cada actividad de desarrollo hay una actividad de prueba; cada nivel tiene objetivos propios; el análisis y diseño empiezan durante la fase de desarrollo correspondiente; los probadores revisan borradores lo antes posible.</p>
+  <p><b>Modelo V / secuencial</b>: la prueba estática puede empezar pronto, pero la prueba <b>dinámica</b> no puede hacerse al principio porque aún no hay código.</p>
+  <div class="tbl"><table>
+    <tr><th>Enfoque</th><th>Qué es</th><th>Cómo reconocerlo</th></tr>
+    <tr><td>TDD</td><td>Primero la prueba (unitaria), luego el código, luego refactorizar</td><td>Desarrolladores, nivel componente, orientado a código</td></tr>
+    <tr><td>ATDD</td><td>Pruebas a partir de <b>criterios de aceptación</b>, escritas antes de desarrollar, para guiar el desarrollo</td><td>Colaborativo: negocio, desarrollo y prueba</td></tr>
+    <tr><td>BDD</td><td>Se describe el comportamiento deseado en lenguaje natural</td><td><b>Dado / Cuando / Entonces</b> (Given/When/Then); comprensible por todos</td></tr>
+  </table></div>
+  <ul>
+    <li><b>DevOps</b>: integración y entrega continua. Ventajas: retroalimentación rápida, menor plazo de comercialización, siempre hay software ejecutable, regresión automatizada. Riesgos: montar el pipeline cuesta, hay que mantener la automatización, sigue haciendo falta prueba manual.</li>
+    <li><b>Desplazamiento a la izquierda (shift-left)</b>: revisar requisitos pronto, escribir pruebas antes del código, integración continua, análisis estático antes de la dinámica, pruebas no funcionales ya en componente. Si algo no tiene que ver con probar antes (p. ej. “escribir un guion antes de montar la gestión de configuración”), NO es shift-left.</li>
+    <li><b>Retrospectivas</b>: qué fue bien, qué mejorar, cómo aplicarlo. Alimentan la <b>mejora continua del proceso</b>.</li>
+    <li><b>Retroalimentación temprana</b>: evita malentendidos sobre requisitos.</li>
+  </ul>
+
+  <h3>7. Niveles de prueba</h3>
+  <div class="tbl"><table>
+    <tr><th>Nivel</th><th>Qué prueba</th><th>Fallo típico</th></tr>
+    <tr><td>Componente (unitaria)</td><td>Un módulo aislado. Suele hacerlo el desarrollador.</td><td>Lógica interna de un módulo</td></tr>
+    <tr><td>Integración de componentes</td><td>Interfaces entre componentes</td><td>Comunicación entre componentes</td></tr>
+    <tr><td>Sistema</td><td>El sistema completo, funcional y no funcional</td><td>Reglas de negocio mal implementadas</td></tr>
+    <tr><td>Integración de sistemas</td><td>Interfaces con otros sistemas y servicios externos</td><td>Conexión con la pasarela de pago</td></tr>
+    <tr><td>Aceptación</td><td>¿Sirve al negocio? Usuario, operacional, contractual, normativa, alfa y beta</td><td>Se desvía de las necesidades de negocio del usuario</td></tr>
+  </table></div>
+
+  <h3>8. Tipos de prueba</h3>
+  <ul>
+    <li><b>Funcional</b>: QUÉ hace el sistema.</li>
+    <li><b>No funcional</b>: CÓMO de bien lo hace: rendimiento, usabilidad, seguridad, fiabilidad, compatibilidad, mantenibilidad, portabilidad. “Responder en menos de 10 s en el 95 % de los casos” = no funcional.</li>
+    <li><b>Caja negra</b>: basada en especificación. <b>Caja blanca</b>: basada en estructura interna (código).</li>
+  </ul>
+  <div class="key"><b>Confirmación vs regresión (cae siempre)</b>
+  <b>Confirmación</b> = volver a ejecutar la prueba que <b>falló</b> para ver si el arreglo funciona.<br>
+  <b>Regresión</b> = ejecutar pruebas que <b>pasaban</b> para ver que el cambio no ha roto otra cosa.<br>
+  Truco: mira el resultado de la ejecución <i>anterior</i>. Falló antes → confirmación. Pasó antes → regresión.</div>
+  <p><b>Prueba de mantenimiento</b>: la disparan <b>modificaciones</b> (correcciones, mejoras), <b>migraciones</b> (a otra plataforma, migración de datos) y la <b>retirada</b> de un sistema (archivado o migración de datos).</p>
+</section>
+
+<!-- ============ DÍA 2 ============ -->
+<section class="day" id="dia2">
+  <span class="eyebrow">Día 2 · mañana · 30 min</span>
+  <h2>Técnicas de prueba y prueba estática</h2>
+  <div class="daymeta"><span class="chip">Cap. 4 + 3</span><span class="chip">15 preguntas</span><span class="muted">Aquí están los ejercicios de cálculo. Hazlos con lápiz.</span></div>
+
+  <h3>1. Partición de equivalencia (PE)</h3>
+  <p>Divide los valores en grupos que el sistema trata igual. Basta un valor de cada grupo. Cobertura = particiones probadas ÷ total de particiones. Incluye también las particiones <b>no válidas</b>.</p>
+  <div class="calc">Ej. (examen v4.0): planta = {baja, 1º, 2º+}; jardín = {sin, pequeño, grande}.
+Solo la planta baja puede tener jardín.
+  1º + sin jardín
+  2º+ + sin jardín
+  baja + pequeño
+  baja + grande        → 4 casos cubren las 6 particiones</div>
+  <p>Truco para varios campos: el mínimo es el número de particiones del campo que más tiene, salvo que una regla obligue a más.</p>
+
+  <h3>2. Análisis del valor frontera (AVF)</h3>
+  <p>Solo vale para particiones <b>ordenadas</b> (números, fechas). Los fallos se esconden en los bordes.</p>
+  <ul>
+    <li><b>2 valores</b>: la frontera y su vecino de la partición de al lado. En la práctica: los valores mínimo y máximo de cada partición.</li>
+    <li><b>3 valores</b>: la frontera y sus dos vecinos (uno a cada lado).</li>
+  </ul>
+  <div class="calc">Ej. 2 valores: notas 0–50 | 51–60 | 61–70 | 71–80 | 81–90 | 91–100
+Fronteras: 0,50,51,60,61,70,71,80,81,90,91,100  → 12 valores
+Pruebas: 91,50,81,60,70,80 → 6 de 12 = 50 %
+
+Ej. 3 valores: T &lt; 12 | T = 12 | T &gt; 12  (enteros)
+Fronteras: 11, 12, 13
+11 → {10,11,12}   12 → {11,12,13}   13 → {12,13,14}
+Mínimo conjunto: {10,11,12,13,14} → 5 valores</div>
+
+  <h3>3. Tablas de decisión</h3>
+  <p>Para lógica de negocio con <b>combinaciones de condiciones</b>. Columnas = reglas. Con n condiciones binarias hay 2ⁿ reglas (3 condiciones → 8). Cobertura = reglas probadas ÷ reglas factibles. Se eliminan columnas <b>imposibles</b> y se pueden fusionar las que dan el mismo resultado (“–” = no importa).</p>
+  <p class="muted">Pregunta típica: “¿qué regla es imposible o contradice la especificación?”. Compara cada columna con el texto, una por una.</p>
+
+  <h3>4. Transición de estados</h3>
+  <p>Para sistemas cuyo comportamiento depende del <b>estado actual o del historial</b> (cajero, login con 3 intentos, pedido).</p>
+  <div class="tbl"><table>
+    <tr><th>Cobertura</th><th>Qué exige</th><th>Fuerza</th></tr>
+    <tr><td>Todos los estados</td><td>Visitar cada estado</td><td>La más débil</td></tr>
+    <tr><td>Transiciones válidas (0-switch)</td><td>Ejercitar cada transición válida</td><td>La más usada; implica todos los estados</td></tr>
+    <tr><td>Todas las transiciones</td><td>Válidas + intentar las no válidas</td><td>La más fuerte. Una no válida por caso de prueba</td></tr>
+  </table></div>
+  <p>Para contar casos mínimos: cada caso empieza en el estado inicial y acaba en el final. Cuenta cuántos “caminos sin vuelta atrás” necesitas para pasar por todas las flechas.</p>
+
+  <h3>5. Caja blanca: sentencia y rama</h3>
+  <ul>
+    <li><b>Cobertura de sentencia</b>: cada línea ejecutable al menos una vez.</li>
+    <li><b>Cobertura de rama</b>: cada salida de cada decisión (verdadero y falso) al menos una vez, incluidos saltos incondicionales. En v4.0 se dice “rama”; en 2018 verás “decisión”.</li>
+  </ul>
+  <div class="ok"><b>La regla</b> 100 % de rama ⇒ 100 % de sentencia. Al revés NO. Un IF sin ELSE: 1 caso da 100 % de sentencia, pero hacen falta 2 para rama.</div>
+  <div class="calc">IF pedido &gt;= 20 THEN dto = 0.05
+   IF pedido &gt;= 100 THEN dto = 0.1
+Sentencia: 1 caso (pedido = 150 pasa por todo)
+Rama:      3 casos (150, 50, 10)</div>
+  <p>100 % de sentencia NO significa que se hayan probado todos los caminos ni todas las entradas. Sí implica que cualquier juego que contenga a ese también tendrá 100 %. La caja blanca no detecta requisitos <b>que faltan</b> en el código.</p>
+
+  <h3>6. Basadas en la experiencia</h3>
+  <div class="tbl"><table>
+    <tr><th>Técnica</th><th>Qué es</th><th>Cuándo la eligen en el examen</th></tr>
+    <tr><td>Predicción de errores</td><td>Anticipar defectos según errores y fallos pasados típicos (ataques de fallos)</td><td>“Según su experiencia con defectos anteriores…”</td></tr>
+    <tr><td>Exploratoria</td><td>Diseñar, ejecutar y aprender a la vez. Por sesiones con un <b>contrato de prueba</b> (charter)</td><td>Requisitos escasos, poco tiempo, probador con buen dominio</td></tr>
+    <tr><td>Basada en lista de comprobación</td><td>Recorrer una lista de puntos (p. ej. buenas prácticas de UI)</td><td>“Se evalúa cada pantalla contra una lista de…”</td></tr>
+  </table></div>
+
+  <h3>7. Enfoques colaborativos</h3>
+  <ul>
+    <li><b>Historia de usuario</b> = 3C: <b>Ficha</b> (Card), <b>Conversación</b>, <b>Confirmación</b> (criterios de aceptación). La escriben <b>juntos</b> negocio, desarrollo y prueba. Buena historia = INVEST (independiente, negociable, valiosa, estimable, pequeña, probable).</li>
+    <li><b>Criterios de aceptación</b>: formato orientado a escenarios (<b>Dado/Cuando/Entonces</b>) u orientado a reglas (lista de verificación).</li>
+    <li><b>ATDD</b>: primero casos positivos, luego negativos y no funcionales, siempre <b>dentro</b> de los criterios de aceptación. Si una opción prueba algo que no está en los criterios, no es la buena.</li>
+  </ul>
+
+  <h3>8. Prueba estática (capítulo 3)</h3>
+  <p>Examinar sin ejecutar: revisiones y análisis estático. Se puede revisar cualquier cosa legible: requisitos, historias, código, planes, presupuestos, calendarios. <b>No</b> se revisa el código ejecutable de terceros (no lo puedes leer).</p>
+  <div class="tbl"><table>
+    <tr><th></th><th>Estática</th><th>Dinámica</th></tr>
+    <tr><td>Encuentra</td><td><b>Defectos</b> directamente</td><td><b>Fallos</b> (y de ahí, defectos)</td></tr>
+    <tr><td>Va mejor para</td><td>Requisitos incompletos o incoherentes, estándares de codificación, código inalcanzable, diseño, seguridad</td><td>Comportamiento externo anómalo, rendimiento</td></tr>
+    <tr><td>Coste</td><td>Más barata: detecta pronto</td><td>Más cara cuanto más tarde</td></tr>
+  </table></div>
+
+  <p><b>Proceso de revisión (5 actividades)</b>: Planificación → Inicio (distribuir material, explicar objetivos) → Revisión individual → Comunicación y análisis → Corrección e informe.</p>
+  <div class="tbl"><table>
+    <tr><th>Rol</th><th>Qué hace</th></tr>
+    <tr><td>Dirección</td><td><b>Decide qué se revisa</b> y aporta recursos</td></tr>
+    <tr><td>Autor</td><td>Crea y corrige el producto</td></tr>
+    <tr><td>Moderador (facilitador)</td><td>Que las reuniones sean eficaces; media si hay conflicto</td></tr>
+    <tr><td>Escriba</td><td>Registra anomalías y decisiones</td></tr>
+    <tr><td>Revisor</td><td>Hace la revisión</td></tr>
+    <tr><td>Líder de la revisión</td><td>Responsabilidad general: quién participa, cuándo y dónde</td></tr>
+  </table></div>
+  <div class="tbl"><table>
+    <tr><th>Tipo</th><th>Formalidad</th><th>Lo que la delata</th></tr>
+    <tr><td>Informal</td><td>Mínima</td><td>Sin proceso definido ni documentación. Solo detectar anomalías</td></tr>
+    <tr><td>Guiada (walkthrough)</td><td>Baja–media</td><td><b>La dirige el autor</b>. Educar, generar consenso e ideas</td></tr>
+    <tr><td>Técnica</td><td>Media</td><td>Dirigida por un moderador; revisores técnicos expertos; consenso y decisiones técnicas</td></tr>
+    <tr><td>Inspección</td><td>Máxima</td><td>Proceso completo, <b>métricas</b>, criterios de salida. El autor <b>no</b> puede ser líder ni escriba</td></tr>
+  </table></div>
+  <p><b>Factores de éxito</b>: objetivos claros, el tipo adecuado, trocear documentos grandes, tiempo suficiente, apoyo de la dirección, formación, clima de respeto, que los <b>defectos</b> se traten objetivamente. (Si dice “fallos encontrados en una revisión”, desconfía: las revisiones encuentran defectos.)</p>
+</section>
+
+<!-- ============ DÍA 3 ============ -->
+<section class="day" id="dia3">
+  <span class="eyebrow">Día 3 · pasado mañana · 30 min</span>
+  <h2>Gestión, herramientas y simulacro</h2>
+  <div class="daymeta"><span class="chip">Cap. 5 + 6</span><span class="chip">11 preguntas</span><span class="muted">15 min de teoría, 15 min con el test de abajo.</span></div>
+
+  <h3>1. Plan de prueba y criterios</h3>
+  <p>Contiene: contexto (alcance, objetivos, base de prueba), supuestos y restricciones, implicados, comunicación, registro de riesgos, <b>enfoque de prueba</b> (niveles, tipos, técnicas, criterios de entrada y salida, independencia, datos y entorno), presupuesto y calendario.</p>
+  <p class="muted">“Se hará prueba de componente e integración y la norma exige 100 % de cobertura de rama” → enfoque de prueba.</p>
+  <ul>
+    <li><b>Criterios de entrada</b> (en ágil, Definición de Preparado): entorno listo, objeto de prueba disponible, datos preparados.</li>
+    <li><b>Criterios de salida</b> (en ágil, Definición de Hecho): cobertura alcanzada, densidad de defectos objetivo, nº de defectos sin resolver, regresión automatizada, presupuesto o tiempo agotado.</li>
+  </ul>
+
+  <h3>2. Estimación</h3>
+  <div class="tbl"><table>
+    <tr><th>Técnica</th><th>Idea</th></tr>
+    <tr><td>Basada en ratios</td><td>Datos históricos de la organización (p. ej. 3:2 desarrollo/prueba)</td></tr>
+    <tr><td>Extrapolación</td><td>Medir al principio del proyecto actual y proyectar</td></tr>
+    <tr><td>Wideband Delphi</td><td>Expertos estiman por separado, comentan y repiten hasta acercarse</td></tr>
+    <tr><td>Póker de planificación</td><td>Variante ágil de Delphi con cartas Fibonacci</td></tr>
+    <tr><td>Tres puntos</td><td>Optimista (a), más probable (m), pesimista (b)</td></tr>
+  </table></div>
+  <div class="calc">E = (a + 4m + b) / 6        desviación = (b − a) / 6
+a=2, m=11, b=14 → (2 + 44 + 14) / 6 = 60 / 6 = 10 horas-persona</div>
+  <p>Póker: si tras varias rondas casi todos coinciden y la regla del equipo lo permite, se acepta el valor más votado.</p>
+
+  <h3>3. Priorización y orden de ejecución</h3>
+  <p>Se prioriza por riesgo, por cobertura o por requisitos. Pero <b>las dependencias mandan</b>: aunque un caso tenga prioridad 1, no puede ir antes que el caso del que depende.</p>
+  <div class="calc">CP001 (prio 3, sin dependencia) → CP002 (prio 2, depende de 001)
+→ luego el de mayor prioridad que dependa de 002: CP003 (prio 1)
+Orden: 001, 002, 003, 004, 005</div>
+
+  <h3>4. Pirámide y cuadrantes</h3>
+  <p><b>Pirámide</b>: muchas pruebas pequeñas, rápidas y automatizadas abajo (componente, vía API), pocas, lentas y grandes arriba (extremo a extremo, vía GUI).</p>
+  <div class="tbl"><table>
+    <tr><th>Cuadrante</th><th>Orientación</th><th>Ejemplos</th></tr>
+    <tr><td>Q1</td><td>Tecnología · apoya al equipo</td><td>Prueba de componente, integración de componentes</td></tr>
+    <tr><td>Q2</td><td>Negocio · apoya al equipo</td><td>Funcionales, historias de usuario, prototipos, API</td></tr>
+    <tr><td>Q3</td><td>Negocio · critica el producto</td><td>Exploratoria, usabilidad, aceptación de usuario</td></tr>
+    <tr><td>Q4</td><td>Tecnología · critica el producto</td><td>No funcionales: rendimiento, seguridad, fiabilidad</td></tr>
+  </table></div>
+
+  <h3>5. Riesgo (2–3 preguntas)</h3>
+  <p>Nivel de riesgo = <b>probabilidad × impacto</b>. Son <b>independientes</b>: un impacto alto no dice nada de la probabilidad.</p>
+  <div class="tbl"><table>
+    <tr><th></th><th>Riesgo de proyecto</th><th>Riesgo de producto</th></tr>
+    <tr><td>Afecta a</td><td>Plazos, presupuesto, gestión</td><td>La calidad del software</td></tr>
+    <tr><td>Ejemplos</td><td>Se llevan a 2 probadores, expectativas imprecisas de los implicados, retrasos, proveedor que falla</td><td>Tiempo de respuesta lento, no cumple seguridad, problemas de accesibilidad, cálculos erróneos</td></tr>
+  </table></div>
+  <p><b>Respuestas al riesgo de producto</b>: <b>mitigar</b> (probar más, o probar antes: “pruebas de rendimiento por un equipo independiente” es mitigación), aceptar, transferir (a un tercero o seguro), plan de contingencia (qué hacer si ocurre). El análisis de riesgo decide el <b>alcance y la minuciosidad</b> de la prueba: más riesgo, más y antes.</p>
+
+  <h3>6. Monitorización, informes y configuración</h3>
+  <ul>
+    <li><b>Métricas de calidad del objeto</b>: número de defectos encontrados, <b>densidad de defectos</b> (defectos ÷ tamaño). Otras: avance, cobertura, coste.</li>
+    <li><b>Informe de avance</b>: durante la prueba (periodo, avance, impedimentos, nuevos riesgos). <b>Informe de compleción</b>: al final (resumen, calidad, desviaciones, lecciones). Al negocio no le sirve la “cobertura de rama”; eso es técnico.</li>
+    <li><b>Gestión de la configuración</b>: identificar, versionar y controlar el testware y los objetos de prueba. “Crear una nueva versión del guion en el repositorio” = gestión de configuración.</li>
+    <li><b>Burndown (gráfico de quemado)</b>: trabajo hecho y pendiente en la iteración.</li>
+  </ul>
+  <p><b>Informe de defecto</b>: id, título, fecha, autor, <b>objeto de prueba y entorno</b>, pasos para reproducir con datos y logs, resultado esperado y real, severidad, prioridad, estado y referencias. Si los desarrolladores dicen “no reproducible”, casi siempre faltaba el entorno o la versión.</p>
+
+  <h3>7. Herramientas (capítulo 6, solo 2 preguntas)</h3>
+  <p>Tipos: gestión, prueba estática, diseño e implementación (incluida la preparación de datos de prueba), ejecución y cobertura, no funcionales, DevOps, colaboración, virtualización y contenedores.</p>
+  <div class="tbl"><table>
+    <tr><th>Beneficios de automatizar</th><th>Riesgos de automatizar</th></tr>
+    <tr><td style="font-weight:400">Ahorra trabajo repetitivo, menos error humano, medición objetiva (cobertura), feedback más rápido, más tiempo para diseñar pruebas</td><td>Expectativas irreales, subestimar coste y <b>mantenimiento</b> del testware, confiar demasiado en la herramienta, dependencia del proveedor, proyecto open source abandonado, incompatibilidad con la plataforma</td></tr>
+  </table></div>
+
+  <h3>8. Cómo leer las preguntas</h3>
+  <ul>
+    <li>Palabras absolutas (<i>siempre, nunca, garantiza, todos, demostrar que no</i>) → casi siempre falsa.</li>
+    <li>Mayúsculas como <b>NO</b>, <b>MEJOR</b>, <b>DOS</b>: subráyalas. En las de “selecciona DOS” no hay puntos parciales.</li>
+    <li>En las de emparejar (1A, 2B…), busca el par del que estés seguro y descarta opciones. Con dos pares seguros sueles tener la respuesta.</li>
+    <li>Deja los cálculos para el final y no te atasques: tienes 1,5 minutos por pregunta.</li>
+  </ul>
+</section>
+
+<!-- ============ TEST ============ -->
+<section class="day" id="test">
+  <span class="eyebrow">Simulacro rápido · 12 preguntas estilo v4.0</span>
+  <h2>Comprueba que lo tienes</h2>
+  <p class="muted">Pulsa una opción: verás si es correcta y por qué. <span id="score">0 / 12</span></p>
+  <div id="quiz"></div>
+</section>
+
+<!-- ============ CLAVE ============ -->
+<section class="day" id="clave">
+  <span class="eyebrow">Tu PDF “CTFL V4.0 Modelo A” no trae respuestas</span>
+  <h2>Clave del examen v4.0</h2>
+  <p>Hazlo primero sin mirar (es el más parecido al real) y corrige aquí. Si te salen 26 o más de las 40 principales, vas bien.</p>
+  <div class="answers">
+    <div>01 <span class="mono">c</span> reducir riesgo, dar confianza</div>
+    <div>02 <span class="mono">a</span> probadores en todo el CVDS</div>
+    <div>03 <span class="mono">a</span> las pruebas se desgastan</div>
+    <div>04 <span class="mono">b</span> decidir qué probar = análisis</div>
+    <div>05 <span class="mono">b</span> CVDS, riesgos, normativa</div>
+    <div>06 <span class="mono">a, e</span> entornos y cobertura</div>
+    <div>07 <span class="mono">b</span> dominio, equipo, pensamiento crítico</div>
+    <div>08 <span class="mono">d</span> ayudar a crear pruebas de aceptación</div>
+    <div>09 <span class="mono">d</span> todos los modelos</div>
+    <div>10 <span class="mono">c</span> criterios → pruebas → desarrollo</div>
+    <div>11 <span class="mono">d</span> no tiene que ver con probar antes</div>
+    <div>12 <span class="mono">c/d</span> mejora continua (c y d están duplicadas por error de traducción)</div>
+    <div>13 <span class="mono">a</span> 1D 2B 3A 4C</div>
+    <div>14 <span class="mono">b</span> 5 y 7 pasaron antes</div>
+    <div>15 <span class="mono">a</span> “detectar más tarde” no es ventaja</div>
+    <div>16 <span class="mono">d</span> evita malentendidos</div>
+    <div>17 <span class="mono">b</span> guiada: la lidera el autor</div>
+    <div>18 <span class="mono">d</span> las revisiones no encuentran fallos</div>
+    <div>19 <span class="mono">c</span> conocimiento del probador</div>
+    <div>20 <span class="mono">b</span> 4 casos</div>
+    <div>21 <span class="mono">a</span> 6 de 12 = 50 %</div>
+    <div>22 <span class="mono">d</span> R8: un no socio no recibe camiseta</div>
+    <div>23 <span class="mono">d</span> 3 caminos hasta APAGADO</div>
+    <div>24 <span class="mono">b</span> más casos siguen al 100 %</div>
+    <div>25 <span class="mono">d</span> no ve requisitos que faltan</div>
+    <div>26 <span class="mono">a</span> defectos y errores pasados</div>
+    <div>27 <span class="mono">c</span> exploratoria</div>
+    <div>28 <span class="mono">b</span> Dado/Cuando/Entonces</div>
+    <div>29 <span class="mono">a</span> dentro de los criterios</div>
+    <div>30 <span class="mono">c</span> identificar y evaluar riesgos</div>
+    <div>31 <span class="mono">c, e</span> densidad y regresión automatizada</div>
+    <div>32 <span class="mono">d</span> 10 horas-persona</div>
+    <div>33 <span class="mono">a</span> CP003 (dependencias primero)</div>
+    <div>34 <span class="mono">a</span> 1C 2A 3B 4D</div>
+    <div>35 <span class="mono">c</span> mitigación</div>
+    <div>36 <span class="mono">d</span> burndown</div>
+    <div>37 <span class="mono">c</span> gestión de la configuración</div>
+    <div>38 <span class="mono">c</span> faltan entorno y versión</div>
+    <div>39 <span class="mono">c</span> implementación y ejecución</div>
+    <div>40 <span class="mono">b</span> poco mantenimiento del testware</div>
+    <div>A01 <span class="mono">a</span> depuración</div>
+    <div>A02 <span class="mono">d</span> QA = proceso; prueba = producto</div>
+    <div>A03 <span class="mono">d</span> defecto</div>
+    <div>A04 <span class="mono">d</span> contrato → diseño</div>
+    <div>A05 <span class="mono">c</span> impacto → elegir regresión</div>
+    <div>A06 <span class="mono">d</span> cuestiona supuestos</div>
+    <div>A07 <span class="mono">a</span> dinámica no al principio</div>
+    <div>A08 <span class="mono">c</span> I y III</div>
+    <div>A09 <span class="mono">b</span> no funcional</div>
+    <div>A10 <span class="mono">a</span> mantenimiento</div>
+    <div>A11 <span class="mono">c</span> todo menos código de terceros</div>
+    <div>A12 <span class="mono">d</span></div>
+    <div>A13 <span class="mono">b</span> varias actividades</div>
+    <div>A14 <span class="mono">b</span> decidir qué revisar</div>
+    <div>A15 <span class="mono">c</span> 10–14</div>
+    <div>A16 <span class="mono">d</span> todos los resultados de decisión</div>
+    <div>A17 <span class="mono">c</span> lista de comprobación</div>
+    <div>A18 <span class="mono">b</span> los tres juntos</div>
+    <div>A19 <span class="mono">d</span> enfoque de prueba</div>
+    <div>A20 <span class="mono">b</span> aceptar 13</div>
+    <div>A21 <span class="mono">b</span> es falsa</div>
+    <div>A22 <span class="mono">c</span> son independientes</div>
+    <div>A23 <span class="mono">a</span> I y IV</div>
+    <div>A24 <span class="mono">d</span> más riesgo, más y antes</div>
+    <div>A25 <span class="mono">a, d</span> defectos y densidad</div>
+    <div>A26 <span class="mono">b</span> cobertura de rama</div>
+  </div>
+  <p class="muted">Clave elaborada a partir del temario v4.0; tu PDF no incluye la oficial. Si alguna te encaja distinto, manda el temario.</p>
+</section>
+</main>
+
+<script>
+const Q=[
+ {s:"Un programador se distrae y codifica mal una comprobación. En producción, el campo acepta valores no válidos. ¿Qué es “el campo acepta valores no válidos”?",o:["Un error","Un defecto","Un fallo","La causa raíz"],a:2,w:"Es lo que se observa al ejecutar: un fallo. La mala codificación es el defecto y la distracción, el error."},
+ {s:"La suite de regresión lleva 6 iteraciones sin cambios y sin encontrar nada. ¿Qué principio te preocupa?",o:["Los defectos se agrupan","Las pruebas se desgastan","La prueba depende del contexto","Falacia de la ausencia de defectos"],a:1,w:"Repetir siempre las mismas pruebas hace que dejen de encontrar defectos (paradoja del pesticida)."},
+ {s:"Defines “comprobar que se puede pagar entre varios usuarios”. ¿En qué actividad estás?",o:["Planificación","Análisis","Diseño","Implementación"],a:1,w:"Decidir QUÉ probar (condición de prueba) es análisis. Elegir valores con AVF para un caso sería diseño."},
+ {s:"Un caso falló en la ejecución 1 y se vuelve a ejecutar en la 2 tras el arreglo. Es una prueba de…",o:["Regresión","Confirmación","Mantenimiento","Aceptación"],a:1,w:"Falló antes → confirmación. Si hubiera pasado antes, sería regresión."},
+ {s:"Rango válido 1–100 (enteros). Con AVF de 2 valores, ¿qué valores necesitas?",o:["1, 100","0, 1, 100, 101","0, 1, 2, 99, 100, 101","1, 50, 100"],a:1,w:"Cada frontera y su vecino de la otra partición: 0|1 y 100|101. Con 3 valores añadirías 2 y 99."},
+ {s:"¿Qué afirmación es VERDADERA?",o:["100 % de sentencia implica 100 % de rama","100 % de rama implica 100 % de sentencia","Son equivalentes","Ninguna implica a la otra"],a:1,w:"La rama es más fuerte: si recorres todas las salidas de cada decisión, has pasado por todas las sentencias."},
+ {s:"Revisión liderada por el autor, con preparación individual, escriba e informe, cuyo objetivo es evaluar la calidad y llegar a consenso.",o:["Informal","Guiada","Técnica","Inspección"],a:1,w:"La pista es “la dirige el autor”: guiada (walkthrough). En la inspección el autor no puede ser líder."},
+ {s:"¿Quién decide qué se va a revisar?",o:["El moderador","El líder de la revisión","La dirección","El autor"],a:2,w:"La dirección decide qué se revisa y aporta recursos. El líder tiene la responsabilidad general de organizarla."},
+ {s:"Optimista 4 h, más probable 10 h, pesimista 22 h. Estimación por tres puntos:",o:["10 h","11 h","12 h","13 h"],a:1,w:"(4 + 4·10 + 22) / 6 = 66 / 6 = 11 h."},
+ {s:"“Uno de los dos probadores senior se va a otro proyecto.” ¿Qué es?",o:["Riesgo de producto","Riesgo de proyecto","Defecto","Fallo"],a:1,w:"Afecta a la gestión (personas, plazos), no a la calidad del software: riesgo de proyecto."},
+ {s:"Prueba de usabilidad: ¿en qué cuadrante ágil está?",o:["Q1","Q2","Q3","Q4"],a:2,w:"Q3: de cara al negocio, critica el producto (exploratoria, usabilidad, aceptación de usuario)."},
+ {s:"Requisitos incompletos, poco tiempo y gran conocimiento del dominio. ¿Qué técnica encaja MEJOR?",o:["Tabla de decisión","Prueba de rama","Prueba exploratoria","Partición de equivalencia"],a:2,w:"La exploratoria funciona bien con especificaciones pobres, presión de tiempo y probadores expertos."}
+];
+const root=document.getElementById('quiz'),score=document.getElementById('score');let ok=0,done=0;
+Q.forEach((q,i)=>{const d=document.createElement('div');d.className='q';
+ d.innerHTML='<p class="stem">'+(i+1)+'. '+q.s+'</p><div class="opts"></div><p class="why" hidden></p>';
+ const box=d.querySelector('.opts'),why=d.querySelector('.why');
+ q.o.forEach((t,j)=>{const b=document.createElement('button');b.type='button';b.id='q'+i+'o'+j;b.textContent=String.fromCharCode(97+j)+') '+t;
+  b.addEventListener('click',()=>{if(d.dataset.done)return;d.dataset.done=1;done++;
+   if(j===q.a){ok++;b.classList.add('right');}else{b.classList.add('wrong');box.children[q.a].classList.add('right');}
+   why.textContent=(j===q.a?'Correcto. ':'No. ')+q.w;why.hidden=false;score.textContent=ok+' / 12'+(done===12?(ok>=8?' · ¡Bien!':' · Repasa los bloques marcados'):'');});
+  box.appendChild(b);});
+ root.appendChild(d);});
+</script>
+
+<div class="pwa-backdrop" id="pwaModal" hidden role="dialog" aria-modal="true" aria-labelledby="pwaTitle">
+  <div class="pwa-sheet">
+    <div class="pwa-row">
+      <img src="/icons/icon-192.png" alt="">
+      <div><h2 id="pwaTitle">¿Guardar como aplicación?</h2>
+      <p>Tendrás la guía en tu lista de apps y funcionará sin conexión, para estudiar en cualquier sitio.</p></div>
+    </div>
+    <div class="pwa-help" id="pwaHelp" hidden></div>
+    <div class="pwa-actions" id="pwaActions">
+      <button type="button" id="pwaNo">No</button>
+      <button type="button" class="yes" id="pwaYes">Sí, instalar</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY='ctfl-install-dismissed', DELAY=10000, REASK_DAYS=3;
+  var modal=document.getElementById('pwaModal'), help=document.getElementById('pwaHelp'),
+      yes=document.getElementById('pwaYes'), no=document.getElementById('pwaNo'),
+      navBtn=document.getElementById('installBtn'), deferred=null;
+  function standalone(){return matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true;}
+  function get(){try{return +localStorage.getItem(KEY)||0}catch(e){return 0}}
+  function set(v){try{v?localStorage.setItem(KEY,String(v)):localStorage.removeItem(KEY)}catch(e){}}
+  var ua=navigator.userAgent, isIOS=/iphone|ipad|ipod/i.test(ua), isMobile=/android|iphone|ipad|ipod|mobile/i.test(ua);
+
+  if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}
+
+  addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;navBtn.hidden=false;});
+  addEventListener('appinstalled',function(){deferred=null;navBtn.hidden=true;close();set(0);});
+
+  function open(){help.hidden=true;yes.hidden=false;no.textContent='No';modal.hidden=false;yes.focus();}
+  function close(){modal.hidden=true;}
+  function manual(){
+    help.innerHTML=isIOS
+      ? 'En iPhone: pulsa <b>Compartir</b> (el cuadrado con la flecha) y después <b>Añadir a pantalla de inicio</b>.'
+      : 'Abre el menú del navegador <b>⋮</b> (arriba a la derecha) y pulsa <b>Instalar aplicación</b> o <b>Añadir a pantalla de inicio</b>.';
+    help.hidden=false;yes.hidden=true;no.textContent='Entendido';
+  }
+  yes.addEventListener('click',function(){
+    if(deferred){deferred.prompt();deferred.userChoice.then(function(r){if(r.outcome!=='accepted')set(Date.now());deferred=null;close();});}
+    else manual();
+  });
+  no.addEventListener('click',function(){if(!yes.hidden)set(Date.now());close();});
+  modal.addEventListener('click',function(e){if(e.target===modal)close();});
+  addEventListener('keydown',function(e){if(e.key==='Escape'&&!modal.hidden)close();});
+  navBtn.addEventListener('click',function(){open();});
+
+  setTimeout(function(){
+    if(standalone())return;
+    var last=get(); if(last&&Date.now()-last<REASK_DAYS*864e5)return;
+    if(deferred||isMobile)open();
+  },DELAY);
+})();
+</script>
+</body>
+</html>
